@@ -1,6 +1,5 @@
 "use client";
 
-import { log } from "console";
 import { useRouter } from "next/navigation";
 
 interface LoginButtonProps {
