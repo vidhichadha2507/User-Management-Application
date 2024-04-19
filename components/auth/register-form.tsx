@@ -17,13 +17,40 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { register } from "@/actions/register";
+import { getAllOrganizations } from "@/data/organization";
+import { Organization } from "@prisma/client";
+import { usePathname } from "next/navigation";
+import { MultiSelect } from "react-multi-select-component";
+import { OrganizationModel } from "@/models/User";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
+  const organizations = useRef<Organization[]>([]);
+  const [selected, setSelected] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [success, setSuccess] = useState<string | undefined>("");
+  const [dropDown, setDropDown] = useState<OrganizationModel[]>([]);
+
+  useMemo(() => {
+    fetch("/api/organizations") // replace with your API endpoint
+      .then((response) => response.json())
+      .then((data) => {
+        organizations.current = data;
+        setLoading(false);
+        setDropDown(
+          data.map((org: any) => ({
+            label: org.name,
+            value: org.id,
+          }))
+        );
+        console.log(organizations.current);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -37,9 +64,10 @@ export const RegisterForm = () => {
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
+    // console.log(selected);
 
     startTransition(() => {
-      register(data).then((data) => {
+      register(data, selected).then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
@@ -112,6 +140,17 @@ export const RegisterForm = () => {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Select Organizations
+            </div>
+            <MultiSelect
+              options={dropDown}
+              value={selected}
+              onChange={setSelected}
+              hasSelectAll={false}
+              isLoading={loading}
+              labelledBy="Select"
             />
           </div>
           <FormError message={error} />

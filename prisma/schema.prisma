@@ -11,6 +11,7 @@ datasource db {
 
 enum Role {
   ADMIN
+  MANAGER
   USER
 }
 
@@ -25,6 +26,10 @@ model User {
   accounts      Account[]
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation   TwoFactorConfirmation?
+  organizations UserOrganization[]
+  managedOrganizations Organization[]
+
+
 
 }
 
@@ -77,4 +82,21 @@ model TwoFactorConfirmation{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Organization {
+  id   String @id @default(cuid())
+  name String @unique
+  managerId String?
+  manager User? @relation(fields: [managerId], references: [id],onDelete: SetNull)
+  users UserOrganization[]
+}
+
+model UserOrganization {
+  userId         String
+  organizationId String
+  user           User @relation(fields: [userId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id],onDelete: Cascade)
+
+  @@id([userId, organizationId])
 }

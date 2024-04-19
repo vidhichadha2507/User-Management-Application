@@ -7,8 +7,12 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { RegisterSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
 import * as z from "zod";
+import { OrganizationModel } from "@/models/User";
 
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
+export const register = async (
+  values: z.infer<typeof RegisterSchema>,
+  organizations: OrganizationModel[]
+) => {
   const validatedFields = RegisterSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -30,6 +34,21 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       password: hashedPassword,
       name,
     },
+  });
+
+  const user = await getUserByEmail(email);
+  if (!user) {
+    return { error: "User not found" };
+  }
+
+  // Create organization
+  organizations.map(async (ord) => {
+    await db.userOrganization.create({
+      data: {
+        userId: user.id,
+        organizationId: ord.value,
+      },
+    });
   });
 
   const verificationToken = await generateVerificationToken(email);

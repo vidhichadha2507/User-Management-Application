@@ -7,7 +7,7 @@ export const SettingsSchema = z
     email: z.optional(z.string().email()),
     password: z.optional(z.string().min(6)),
     isTwoFactorEnabled: z.optional(z.boolean()),
-    role: z.enum([Role.ADMIN, Role.USER]),
+    role: z.enum([Role.ADMIN, Role.USER, Role.MANAGER]),
     newPassword: z.optional(z.string().min(6)),
   })
   .refine(
@@ -70,4 +70,11 @@ export const RegisterSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
   }),
+});
+
+export const OrganizationSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  email: z.optional(z.string()),
 });

@@ -75,7 +75,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <Card className=" w-[600px]">
+    <Card className=" w-[90%]">
       <CardHeader>
         <p className=" text-2xl font-semibold text-center">🔧 Settings</p>
       </CardHeader>
@@ -177,6 +177,7 @@ const SettingsPage = () => {
                       <SelectContent>
                         <SelectItem value={Role.ADMIN}>Admin</SelectItem>
                         <SelectItem value={Role.USER}>User</SelectItem>
+                        <SelectItem value={Role.MANAGER}>Manager</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

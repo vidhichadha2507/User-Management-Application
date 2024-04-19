@@ -2,7 +2,11 @@
  * Array of routes which are accessible by everyone.
  * @type {string[]}
  */
-export const publicRoutes: string[] = ["/", "/auth/new-verification"];
+export const publicRoutes: string[] = [
+  "/",
+  "/auth/new-verification",
+  "/api/organizations",
+];
 
 /**
  * Array of authentication routes.

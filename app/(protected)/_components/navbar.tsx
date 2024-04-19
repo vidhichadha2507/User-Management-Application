@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 const Navbar = () => {
   const pathname = usePathname();
   return (
-    <nav className=" bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] shadow-sm">
+    <nav className=" bg-secondary flex justify-between mt-4 items-center p-4 rounded-xl w-[90%] shadow-sm">
       <div className="flex gap-x-2">
         <Button
           asChild
@@ -24,6 +24,12 @@ const Navbar = () => {
         </Button>
         <Button asChild variant={pathname === "/admin" ? "default" : "outline"}>
           <Link href="/admin">Admin</Link>
+        </Button>
+        <Button
+          asChild
+          variant={pathname === "/organization" ? "default" : "outline"}
+        >
+          <Link href="/organization">Organization</Link>
         </Button>
         <Button
           asChild
