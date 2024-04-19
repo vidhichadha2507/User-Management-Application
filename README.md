@@ -72,14 +72,7 @@ NEXT_PUBLIC_API_URL=
 npm i
 ```
 
-3. Generate Prisma:
-
-```bash
-npx prisma generate
-npx prisma db push
-```
-
-4. Start the development server:
+3. Start the development server:
 
 ```bash
 npm run dev
