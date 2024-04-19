@@ -1,6 +1,6 @@
 "use server";
 
-import { generateVerificationToken } from "@/data/tokens";
+import { generateVerificationToken } from "@/lib/tokens";
 import { getUserByEmail } from "@/data/user";
 import { db } from "@/lib/db";
 import { sendVerificationEmail } from "@/lib/mail";
