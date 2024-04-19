@@ -1,8 +1,10 @@
-import { UserInfo } from "@/components/user-info";
-import { currentUser } from "@/lib/auth";
+"use client";
 
-const ClientPage = async () => {
-  const user = await currentUser();
+import { UserInfo } from "@/components/user-info";
+import { useCurrentUser } from "@/hooks/use-current-user";
+
+const ClientPage = () => {
+  const user = useCurrentUser();
 
   return <UserInfo user={user} label="📱 Client Component"></UserInfo>;
 };
