@@ -8,11 +8,18 @@ import { useCurrentRole } from "@/hooks/use-current-role";
 import { Role } from "@prisma/client";
 import { toast } from "sonner";
 
+/**
+ * Renders the AdminPage component.
+ * This component displays admin-only content and allows testing of admin-only API routes and server actions.
+ */
 const AdminPage = () => {
   const role = useCurrentRole();
 
+  /**
+   * Handles the click event for testing admin-only server actions.
+   * Calls the admin() function and displays a success or error toast based on the response.
+   */
   const onServerActionClick = () => {
-    // Call admin only server actions
     admin().then((response) => {
       if (response.success) {
         toast.success(response.success);
@@ -22,8 +29,11 @@ const AdminPage = () => {
     });
   };
 
+  /**
+   * Handles the click event for testing admin-only API routes.
+   * Sends a request to the "/api/admin" endpoint and displays a success or error toast based on the response.
+   */
   const onApiRouteClick = () => {
-    // Call admin only API routes
     fetch("/api/admin").then((response) => {
       if (response.ok) {
         toast.success("Allowed API route");
@@ -32,6 +42,7 @@ const AdminPage = () => {
       }
     });
   };
+
   return (
     <Card className="w-[90%]">
       <CardHeader>

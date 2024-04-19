@@ -3,9 +3,14 @@ import { getUserById, getUsersByOrganizationId } from "@/data/user";
 import { currentUser } from "@/lib/auth";
 import { OrganizationUsers } from "@/models/User";
 import { User } from "@prisma/client";
-import { useSearchParams } from "next/navigation";
-import { NextRequest, NextResponse } from "next/server";
 
+import { NextResponse } from "next/server";
+
+/**
+ * Retrieves all organizations and their associated users for the current user.
+ * @returns A NextResponse object with the organizations and their users in JSON format.
+ * @throws If there is an internal server error, returns a NextResponse object with a status of 500.
+ */
 export async function GET() {
   try {
     let allUsers: User[] = [];
@@ -18,7 +23,6 @@ export async function GET() {
     if (!organizations)
       return new NextResponse("No organization found", { status: 200 });
 
-    //Now fetch all the users of the organization of all the organizations
     for (let organization of organizations) {
       const users = await getUsersByOrganizationId(organization.id);
 

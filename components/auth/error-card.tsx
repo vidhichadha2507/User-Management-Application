@@ -3,6 +3,10 @@ import { Card, CardHeader } from "../ui/card";
 import { BackButton } from "./back-button";
 import { Header } from "./header";
 
+/**
+ * Renders an error card component.
+ * This component displays an error message and a back button.
+ */
 export const ErrorCard = () => {
   return (
     <Card className="w-[400px] shadow-md">

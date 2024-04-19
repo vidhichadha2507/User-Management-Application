@@ -17,14 +17,18 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
 import { register } from "@/actions/register";
-import { getAllOrganizations } from "@/data/organization";
+
 import { Organization } from "@prisma/client";
-import { usePathname } from "next/navigation";
+
 import { MultiSelect } from "react-multi-select-component";
 import { OrganizationModel } from "@/models/User";
 
+/**
+ * Renders a registration form component.
+ * Allows users to create an account by providing their name, email, password, and selecting organizations.
+ */
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -60,6 +64,12 @@ export const RegisterForm = () => {
     },
   });
 
+  /**
+   * Handles form submission.
+   * Calls the register function with the form data and selected organizations.
+   * Sets the error message if registration fails, or the success message if registration is successful.
+   * @param data - The form data.
+   */
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
@@ -154,7 +164,8 @@ export const RegisterForm = () => {
           <FormSuccess message={success} />
           <Button
             type="submit"
-            className="w-full bg-blue-400 hover:bg-blue-500 transition-colors duration-200"
+            className="w-full"
+            variant="default"
             disabled={isPending}
           >
             Create an Account

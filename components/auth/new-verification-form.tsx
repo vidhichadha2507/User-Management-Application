@@ -8,6 +8,11 @@ import { newVerification } from "@/actions/new-verification";
 import { FormSuccess } from "../form-success";
 import { FormError } from "../form-error";
 
+/**
+ * Represents a form component for new verification.
+ * This component handles the form submission, token validation,
+ * and displays success or error messages based on the response.
+ */
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -15,6 +20,12 @@ export const NewVerificationForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams?.get("token");
 
+  /**
+   * Handles the form submission for the new verification form.
+   * If the token does not exist, it sets an error message and returns.
+   * Otherwise, it calls the newVerification function with the token,
+   * sets the success and error states based on the response, and handles any errors.
+   */
   const onSubmit = useCallback(() => {
     if (success || error) return;
 
@@ -32,9 +43,6 @@ export const NewVerificationForm = () => {
       });
   }, [token, success, error]);
 
-  //   useEffect(() => {
-  //     onSubmit();
-  //   }, [onSubmit]);
   const isFirstRender = useRef(true);
 
   useEffect(() => {

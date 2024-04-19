@@ -8,6 +8,18 @@ import { NewPasswordSchema } from "@/schemas";
 import * as z from "zod";
 import { db } from "@/lib/db";
 
+/**
+ * Updates the password for a user using the provided token.
+ * @param values - The values containing the new password.
+ * @param token - The token used to verify the password reset request.
+ * @returns An object indicating the result of the password update operation.
+ *          If successful, it returns { success: "Password updated" }.
+ *          If the token is not found, it returns { error: "Token not found" }.
+ *          If the fields are invalid, it returns { error: "Invalid fields" }.
+ *          If the token is invalid, it returns { error: "Invalid Token" }.
+ *          If the token has expired, it returns { error: "Token expired" }.
+ *          If the user does not exist, it returns { error: "Email does not exist" }.
+ */
 export const newPassword = async (
   values: z.infer<typeof NewPasswordSchema>,
   token: string | null

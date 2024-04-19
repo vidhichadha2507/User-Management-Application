@@ -9,6 +9,12 @@ import bcrypt from "bcryptjs";
 import * as z from "zod";
 import { OrganizationModel } from "@/models/User";
 
+/**
+ * Registers a new user with the provided values and assigns them to organizations.
+ * @param values - The user registration data.
+ * @param organizations - The organizations to assign the user to.
+ * @returns An object indicating the success or failure of the registration process.
+ */
 export const register = async (
   values: z.infer<typeof RegisterSchema>,
   organizations: OrganizationModel[]
@@ -41,7 +47,6 @@ export const register = async (
     return { error: "User not found" };
   }
 
-  // Create organization
   organizations.map(async (ord) => {
     await db.userOrganization.create({
       data: {

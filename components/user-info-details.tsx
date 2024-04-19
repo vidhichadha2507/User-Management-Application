@@ -5,6 +5,11 @@ interface UserInfoProps {
   user?: ExtendedUser;
 }
 
+/**
+ * Renders the user information details.
+ * @param {UserInfoProps} user - The user object containing the user information.
+ * @returns {JSX.Element} - The JSX element representing the user information details.
+ */
 export const UserInfoDetails = ({ user }: UserInfoProps) => (
   <>
     <div className=" flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">

@@ -15,6 +15,23 @@ import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
+/**
+ * Authenticates a user by logging them in.
+ *
+ * @param values - The login credentials provided by the user.
+ * @param callbackUrl - The URL to redirect the user to after successful login.
+ * @returns An object containing the result of the login operation.
+ *          - If successful, it returns `{ success: "Confirmation email sent" }` if email verification is required,
+ *            `{ twoFactor: true }` if two-factor authentication is enabled, or the user object if not.
+ *          - If unsuccessful, it returns `{ error: "Invalid fields!" }` if the provided fields are invalid,
+ *            `{ error: "Email does not exist" }` if the email does not exist,
+ *            `{ error: "Invalid code" }` if the two-factor authentication code is invalid,
+ *            `{ error: "Code expired" }` if the two-factor authentication code has expired,
+ *            `{ error: "Code does not match" }` if the two-factor authentication code does not match,
+ *            `{ error: "Invalid credentials!" }` if the provided credentials are invalid,
+ *            or `{ error: "Something went wrong" }` if an unknown error occurred.
+ * @throws Throws an error if an error occurs during the login process.
+ */
 export const login = async (
   values: z.infer<typeof LoginSchema>,
   callbackUrl?: string | null

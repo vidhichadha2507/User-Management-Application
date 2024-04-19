@@ -17,14 +17,15 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+
 import { reset } from "@/actions/reset";
 
+/**
+ * Component for the reset password form.
+ * This form allows users to reset their password by providing their email address.
+ */
 export const ResetForm = () => {
-  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -36,6 +37,13 @@ export const ResetForm = () => {
     },
   });
 
+  /**
+   * Handles form submission.
+   * Resets the error and success messages, then calls the reset function.
+   * If the reset function returns an error, sets the error message.
+   * If the reset function is successful, sets the success message.
+   * @param data - The form data containing the email address.
+   */
   const onSubmit = (data: z.infer<typeof ResetSchema>) => {
     setError("");
     setSuccess("");

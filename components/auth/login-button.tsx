@@ -10,6 +10,15 @@ interface LoginButtonProps {
   asChild?: boolean;
 }
 
+/**
+ * Renders a login button component.
+ *
+ * @param {LoginButtonProps} props - The component props.
+ * @param {ReactNode} props.children - The content of the button.
+ * @param {string} [props.mode="redirect"] - The mode of the button (either "redirect" or "modal").
+ * @param {boolean} [props.asChild] - Whether the button is used as a child component.
+ * @returns {JSX.Element} The rendered login button component.
+ */
 export const LoginButton = ({
   children,
   mode = "redirect",

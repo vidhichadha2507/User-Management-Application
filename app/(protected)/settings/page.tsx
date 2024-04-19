@@ -1,6 +1,6 @@
 "use client";
 import * as z from "zod";
-import { logout } from "@/actions/logout";
+
 import { settings } from "@/actions/settings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { useSession } from "next-auth/react";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { start } from "repl";
+
 import { SettingsSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -33,6 +33,11 @@ import {
 import { Role } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
 
+/**
+ * The settings page component.
+ *
+ * @returns The settings page component.
+ */
 const SettingsPage = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -52,6 +57,11 @@ const SettingsPage = () => {
     },
   });
 
+  /**
+   * Handles the click event and updates the settings.
+   *
+   * @param values - The values of the settings to be updated.
+   */
   const handleOnClick = (values: z.infer<typeof SettingsSchema>) => {
     setError("");
     setSuccess("");

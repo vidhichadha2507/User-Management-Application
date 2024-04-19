@@ -2,6 +2,10 @@ import { getAllOrganizations } from "@/data/organization";
 import { getUserById } from "@/data/user";
 import { NextResponse } from "next/server";
 
+/**
+ * Retrieves all organizations with manager details.
+ * @returns {Promise<NextResponse>} A promise that resolves to a NextResponse object containing the organizations with manager details.
+ */
 export async function GET() {
   try {
     const organizations = await getAllOrganizations();

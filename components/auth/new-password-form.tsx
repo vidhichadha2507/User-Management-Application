@@ -17,13 +17,16 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
+
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { reset } from "@/actions/reset";
+
 import { newPassword } from "@/actions/new-password";
 
+/**
+ * Renders a form for entering a new password.
+ * @returns JSX.Element
+ */
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -39,6 +42,10 @@ export const NewPasswordForm = () => {
     },
   });
 
+  /**
+   * Handles form submission.
+   * @param data - The form data.
+   */
   const onSubmit = (data: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");

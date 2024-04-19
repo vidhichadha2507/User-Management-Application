@@ -5,23 +5,25 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+/**
+ * Renders the navigation bar component.
+ * @returns The JSX element representing the navigation bar.
+ */
 const Navbar = () => {
   const pathname = usePathname();
   return (
     <nav className=" bg-secondary flex justify-between mt-4 items-center p-4 rounded-xl w-[90%] shadow-sm">
       <div className="flex gap-x-2">
+        <Button asChild variant={pathname === "/user" ? "default" : "outline"}>
+          <Link href="/user">User</Link>
+        </Button>
         <Button
           asChild
           variant={pathname === "/manager" ? "default" : "outline"}
         >
           <Link href="/manager">Manager</Link>
         </Button>
-        <Button
-          asChild
-          variant={pathname === "/client" ? "default" : "outline"}
-        >
-          <Link href="/client">Client</Link>
-        </Button>
+
         <Button asChild variant={pathname === "/admin" ? "default" : "outline"}>
           <Link href="/admin">Admin</Link>
         </Button>

@@ -2,23 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { UserInfo } from "@/components/user-info";
-import { useCurrentUser } from "@/hooks/use-current-user";
-
-import { currentUser } from "@/lib/auth";
-import { OrganizationResponse, OrganizationUsers } from "@/models/User";
-import { CrossCircledIcon, GearIcon } from "@radix-ui/react-icons";
-import { use, useEffect, useState } from "react";
+import { OrganizationUsers } from "@/models/User";
+import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
+/**
+ * ServerPage component displays a page that shows a list of organizations and their users.
+ */
 const ServerPage = () => {
-  const user = useCurrentUser();
   const [loading, setLoading] = useState(true);
   const [organizations, setOrganizations] = useState<OrganizationUsers[]>([]);
   const [selectedOrganization, setSelectedOrganization] =
     useState<OrganizationUsers>();
   const [isSelectedOrganization, setIsSelectedOrganization] = useState(false);
-  const check = "hello";
+
   useEffect(() => {
     setLoading(true);
     fetch("/api/organizationById")
@@ -29,11 +26,14 @@ const ServerPage = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error:", error);
         setLoading(false);
       });
   }, []);
 
+  /**
+   * Handles the view of a specific organization.
+   * @param organization - The organization to view.
+   */
   const handleView = (organization: OrganizationUsers) => {
     setSelectedOrganization(organization);
     setIsSelectedOrganization(true);

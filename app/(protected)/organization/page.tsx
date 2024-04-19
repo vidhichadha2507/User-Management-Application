@@ -33,20 +33,65 @@ import { Role } from "@prisma/client";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 
+/**
+ * Represents the Organization Page component.
+ */
 const OrganizationPage = () => {
+  /**
+   * Represents the error state.
+   */
   const [error, setError] = useState<string | undefined>("");
+
+  /**
+   * Represents the success state.
+   */
   const [success, setSuccess] = useState<string | undefined>("");
+
+  /**
+   * Represents the isPending state.
+   */
   const [isPending, startTransition] = useTransition();
+
+  /**
+   * Represents the organizations state.
+   */
   const [organizations, setOrganizations] = useState<OrganizationResponse[]>(
     []
   );
+
+  /**
+   * Represents the orgId state.
+   */
   const [orgId, setOrgId] = useState<string>("");
+
+  /**
+   * Represents the isEdit state.
+   */
   const [isEdit, setIsEdit] = useState(false);
+
+  /**
+   * Represents the isDelete state.
+   */
   const [isDelete, setIsDelete] = useState(false);
+
+  /**
+   * Represents the fetchTrigger state.
+   */
   const [fetchTrigger, setFetchTrigger] = useState(0); // add this line to your component
+
+  /**
+   * Represents the loading state.
+   */
   const [loading, setLoading] = useState(true);
+
+  /**
+   * Represents the user state.
+   */
   const user = useCurrentUser();
 
+  /**
+   * Represents the form state.
+   */
   const form = useForm<z.infer<typeof OrganizationSchema>>({
     resolver: zodResolver(OrganizationSchema),
     defaultValues: {
@@ -54,6 +99,10 @@ const OrganizationPage = () => {
       email: "",
     },
   });
+
+  /**
+   * Fetches organizations data from the server.
+   */
   useEffect(() => {
     setLoading(true);
     fetch("/api/organizations")
@@ -67,11 +116,14 @@ const OrganizationPage = () => {
         });
       })
       .catch((error) => {
-        console.error("Error:", error);
         setLoading(false);
       });
   }, [fetchTrigger]);
 
+  /**
+   * Handles the edit action for an organization.
+   * @param id - The ID of the organization to edit.
+   */
   const handleEdit = (id: string) => {
     if (user?.role !== Role.ADMIN) {
       toast.error("Unauthorized");
@@ -92,6 +144,11 @@ const OrganizationPage = () => {
       }
     }
   };
+
+  /**
+   * Handles the delete action for an organization.
+   * @param id - The ID of the organization to delete.
+   */
   const handleDelete = (id: string) => {
     setError("");
     setSuccess("");
@@ -116,13 +173,16 @@ const OrganizationPage = () => {
     }
   };
 
+  /**
+   * Handles the form submission.
+   * @param data - The form data.
+   */
   const onSubmit = (data: z.infer<typeof OrganizationSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
       if (isEdit) {
-        // update organization
         updateOrganization(orgId, data, user?.role)
           .then((data) => {
             if (data?.error) {

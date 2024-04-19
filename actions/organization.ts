@@ -6,6 +6,16 @@ import { OrganizationSchema } from "@/schemas";
 import { Role } from "@prisma/client";
 import * as z from "zod";
 
+/**
+ * Creates an organization with the provided values.
+ * @param values - The values for creating the organization.
+ * @returns An object indicating the result of the organization creation.
+ *          If successful, it returns { success: "Organization created" }.
+ *          If there are any validation errors, it returns { error: "Invalid fields" }.
+ *          If the email is missing, it returns { error: "Email is required" }.
+ *          If the manager does not exist, it returns { error: "Manager does not exist" }.
+ *          If the provided user is not a manager, it returns { error: "Provided user is not a manager" }.
+ */
 export const organization = async (
   values: z.infer<typeof OrganizationSchema>
 ) => {
@@ -38,6 +48,13 @@ export const organization = async (
   return { success: "Organization created" };
 };
 
+/**
+ * Updates an organization with the provided values.
+ * @param id - The ID of the organization to update.
+ * @param values - The values to update the organization with.
+ * @param role - The role of the user performing the update.
+ * @returns An object indicating the result of the update operation.
+ */
 export const updateOrganization = async (
   id: string,
   values: z.infer<typeof OrganizationSchema>,
@@ -77,6 +94,15 @@ export const updateOrganization = async (
   return { success: "Organization updated" };
 };
 
+/**
+ * Deletes an organization by its ID.
+ * @param id - The ID of the organization to delete.
+ * @param role - The role of the user performing the deletion.
+ * @returns An object indicating the result of the deletion operation.
+ *          If the deletion is successful, the object will contain a `success` property with the value "Organization deleted".
+ *          If the user is unauthorized, the object will contain an `error` property with the value "Unauthorized".
+ *          If the organization is not found, the object will contain an `error` property with the value "Organization not found".
+ */
 export const deleteOrganization = async (id: string, role: Role) => {
   const org = await getOrganizationById(id);
 

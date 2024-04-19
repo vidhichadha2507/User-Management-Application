@@ -8,22 +8,27 @@ import { authRoutes } from "./routes";
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
 import { getAccountByUserId } from "./data/account";
 
-// declare module "next-auth" {
-//   interface Session {
-//     user: {
-//       id: string;
-//       role: Role;
-//     } & DefaultSession["user"];
-//   }
-// }
-
+/**
+ * This file contains the authentication logic for the User Management System.
+ * It exports the `auth`, `handlers`, `signIn`, and `signOut` objects from NextAuth.
+ * It also defines various callbacks and events related to authentication.
+ *
+ * @module auth
+ */
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  // Configuration options for the authentication module
   pages: {
-    signIn: authRoutes[0],
-    error: "/auth/error",
+    signIn: authRoutes[0], // The sign-in page route
+    error: "/auth/error", // The error page route
   },
 
   events: {
+    /**
+     * Event handler for linking user accounts.
+     * Updates the email verification status of the user in the database.
+     *
+     * @param {object} user - The user object
+     */
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
@@ -33,6 +38,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
+    /**
+     * Callback function for the sign-in process.
+     * Handles custom logic for sign-in with credentials provider.
+     *
+     * @param {object} user - The user object
+     * @param {object} account - The account object
+     * @returns {boolean} - Returns true if sign-in is successful, false otherwise
+     */
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
@@ -60,6 +73,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return true;
     },
 
+    /**
+     * Callback function for the session creation.
+     * Updates the session object with additional user information from the token.
+     *
+     * @param {object} token - The token object
+     * @param {object} session - The session object
+     * @returns {object} - The updated session object
+     */
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -77,6 +98,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
 
+    /**
+     * Callback function for JWT token creation.
+     * Updates the token object with additional user information from the database.
+     *
+     * @param {object} token - The token object
+     * @param {object} user - The user object
+     * @returns {object} - The updated token object
+     */
     async jwt({ token, user }) {
       if (!token.sub) return token;
 
@@ -94,9 +123,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
   },
-  adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(db), // The Prisma adapter for database integration
   session: {
-    strategy: "jwt",
+    strategy: "jwt", // The session strategy
   },
-  ...authConfig,
+  ...authConfig, // Additional authentication configuration options
 });

@@ -9,6 +9,19 @@ import { generateVerificationToken } from "@/lib/tokens";
 import { SettingsSchema } from "@/schemas";
 import * as z from "zod";
 
+/**
+ * Updates the settings for a user.
+ *
+ * @param values - The new settings values.
+ * @returns An object indicating the result of the settings update.
+ *          - If the user is not authenticated, returns an error message.
+ *          - If the user ID is undefined, returns an error message.
+ *          - If the user is unauthorized, returns an error message.
+ *          - If the email is already in use, returns an error message.
+ *          - If the verification email is sent successfully, returns a success message.
+ *          - If the password is incorrect, returns an error message.
+ *          - If the settings are updated successfully, returns a success message.
+ */
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
   const user = await currentUser();
   if (!user) {

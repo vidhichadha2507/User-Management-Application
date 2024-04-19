@@ -1,6 +1,9 @@
 import { Role } from "@prisma/client";
 import * as z from "zod";
 
+/**
+ * Represents the settings schema for user management.
+ */
 export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
@@ -35,17 +38,30 @@ export const SettingsSchema = z
     }
   );
 
+/**
+ * Represents the schema for resetting a password.
+ */
 export const ResetSchema = z.object({
+  /**
+   * The email address of the user.
+   * @remarks The email must be a valid email address.
+   */
   email: z.string().email({
     message: "Password length must be at least 6 characters",
   }),
 });
+/**
+ * Represents the schema for a new password.
+ */
 export const NewPasswordSchema = z.object({
   password: z.string().min(6, {
     message: "Password is required",
   }),
 });
 
+/**
+ * Represents the login schema for user authentication.
+ */
 export const LoginSchema = z.object({
   email: z.string().email({
     message: "Email is required",
@@ -60,6 +76,9 @@ export const LoginSchema = z.object({
   ),
 });
 
+/**
+ * Represents the schema for user registration.
+ */
 export const RegisterSchema = z.object({
   email: z.string().email({
     message: "Email is required",
@@ -72,9 +91,21 @@ export const RegisterSchema = z.object({
   }),
 });
 
+/**
+ * Represents the schema for an organization.
+ */
 export const OrganizationSchema = z.object({
+  /**
+   * The name of the organization.
+   * @remarks This field is required.
+   */
   name: z.string().min(1, {
     message: "Name is required",
   }),
+
+  /**
+   * The email of the organization.
+   * @remarks This field is optional.
+   */
   email: z.optional(z.string()),
 });

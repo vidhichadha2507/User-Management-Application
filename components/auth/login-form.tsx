@@ -22,6 +22,11 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+/**
+ * Renders a login form component.
+ *
+ * @returns The login form component.
+ */
 export const LoginForm = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get("callbackUrl");
@@ -43,6 +48,11 @@ export const LoginForm = () => {
     },
   });
 
+  /**
+   * Handles the form submission for the login form.
+   *
+   * @param data - The form data to be submitted.
+   */
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
@@ -152,7 +162,8 @@ export const LoginForm = () => {
           <FormSuccess message={success} />
           <Button
             type="submit"
-            className="w-full bg-blue-400 hover:bg-blue-500 transition-colors duration-200"
+            className="w-full"
+            variant="default"
             disabled={isPending}
           >
             {showTwoFactor ? "Verify" : "Login"}

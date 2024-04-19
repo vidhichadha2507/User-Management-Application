@@ -1,13 +1,18 @@
-import {
-  CheckCircledIcon,
-  ExclamationTriangleIcon,
-} from "@radix-ui/react-icons";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 
 interface FormSuccessProps {
   message?: string;
 }
 
-export const FormSuccess = ({ message }: FormSuccessProps) => {
+/**
+ * Renders a success message for a form submission.
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The success message to display.
+ * @returns {JSX.Element | null} The rendered success message component.
+ */
+export const FormSuccess = ({
+  message,
+}: FormSuccessProps): JSX.Element | null => {
   if (!message) return null;
 
   return (

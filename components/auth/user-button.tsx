@@ -10,6 +10,10 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "./logout-button";
 import { ExitIcon } from "@radix-ui/react-icons";
 
+/**
+ * Renders a user button component.
+ * This component displays the user's avatar and provides a dropdown menu with logout functionality.
+ */
 export const UserButton = () => {
   const user = useCurrentUser();
   return (
