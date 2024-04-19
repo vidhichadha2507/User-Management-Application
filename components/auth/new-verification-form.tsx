@@ -13,11 +13,11 @@ export const NewVerificationForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
 
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams?.get("token");
 
   const onSubmit = useCallback(() => {
     if (success || error) return;
-    console.log(token);
+
     if (!token) {
       setError("Token does not exist");
       return;

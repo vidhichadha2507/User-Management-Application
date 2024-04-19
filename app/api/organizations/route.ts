@@ -1,12 +1,10 @@
 import { getAllOrganizations } from "@/data/organization";
 import { getUserById } from "@/data/user";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     const organizations = await getAllOrganizations();
-    console.log(organizations);
 
     // Fetch user details for each manager and add them to the response
     if (!organizations)

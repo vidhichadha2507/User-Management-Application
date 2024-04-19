@@ -66,7 +66,6 @@ export const LoginForm = () => {
           setError("Something went wrong");
         });
     });
-    // console.log(data);
   };
 
   return (

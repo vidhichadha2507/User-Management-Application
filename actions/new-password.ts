@@ -21,12 +21,9 @@ export const newPassword = async (
     return { error: "Invalid fields" };
   }
   const { password } = validatedFileds.data;
-  console.log(token);
 
   const existingToken = await getResetPasswordTokenByToken(token);
   if (!existingToken) {
-    console.log(existingToken);
-
     return { error: "Invalid Token" };
   }
   if (existingToken.expiresAt < new Date()) {

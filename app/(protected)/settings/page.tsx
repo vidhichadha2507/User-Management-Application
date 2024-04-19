@@ -55,7 +55,6 @@ const SettingsPage = () => {
   const handleOnClick = (values: z.infer<typeof SettingsSchema>) => {
     setError("");
     setSuccess("");
-    console.log(values);
 
     startTransition(() => {
       settings(values)

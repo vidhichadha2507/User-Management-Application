@@ -30,7 +30,7 @@ export const NewPasswordForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
-  const token = searchParams.get("token");
+  const token = searchParams?.get("token");
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
@@ -44,7 +44,7 @@ export const NewPasswordForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      newPassword(data, token).then((data) => {
+      newPassword(data, token ?? null).then((data) => {
         if (data?.error) {
           setError(data?.error);
         } else {
@@ -52,7 +52,6 @@ export const NewPasswordForm = () => {
         }
       });
     });
-    console.log(data);
   };
 
   return (

@@ -34,19 +34,22 @@ export const organization = async (
     },
   });
   const orgs = await getAllOrganizations();
-  console.log(orgs);
 
-  console.log(values);
   return { success: "Organization created" };
 };
 
 export const updateOrganization = async (
   id: string,
-  values: z.infer<typeof OrganizationSchema>
+  values: z.infer<typeof OrganizationSchema>,
+  role: Role
 ) => {
   const validatedFields = OrganizationSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid fields" };
+  }
+
+  if (role !== Role.ADMIN) {
+    return { error: "Unauthorized" };
   }
 
   if (!values.email) {
@@ -74,8 +77,12 @@ export const updateOrganization = async (
   return { success: "Organization updated" };
 };
 
-export const deleteOrganization = async (id: string) => {
+export const deleteOrganization = async (id: string, role: Role) => {
   const org = await getOrganizationById(id);
+
+  if (role !== Role.ADMIN) {
+    return { error: "Unauthorized" };
+  }
 
   if (!org) {
     return { error: "Organization not found" };

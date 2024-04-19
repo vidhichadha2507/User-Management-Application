@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
 export interface OrganizationModel {
   label: string;
@@ -20,4 +20,11 @@ export interface Manager {
   name: string;
   password: string;
   role: Role;
+}
+
+export interface OrganizationUsers {
+  id: string;
+  name: string;
+  managerId: string | null;
+  users?: User[];
 }

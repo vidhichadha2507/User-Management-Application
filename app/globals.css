@@ -85,3 +85,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.gradient {
+  background: rgb(238, 174, 202);
+  background: radial-gradient(circle, #a573a6, #5006d7);
+}

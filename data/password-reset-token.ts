@@ -7,12 +7,9 @@ export const getResetPasswordTokenByToken = async (token: string) => {
         token,
       },
     });
-    console.log("lib ->", passwordToken);
 
     return passwordToken;
   } catch (error) {
-    console.log("lib ->", error);
-
     return null;
   }
 };

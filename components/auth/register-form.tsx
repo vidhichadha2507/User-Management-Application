@@ -47,7 +47,6 @@ export const RegisterForm = () => {
             value: org.id,
           }))
         );
-        console.log(organizations.current);
       })
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -64,7 +63,6 @@ export const RegisterForm = () => {
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
     setError("");
     setSuccess("");
-    // console.log(selected);
 
     startTransition(() => {
       register(data, selected).then((data) => {
@@ -75,7 +73,6 @@ export const RegisterForm = () => {
         }
       });
     });
-    console.log(data);
   };
 
   return (

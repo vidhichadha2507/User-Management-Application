@@ -19,8 +19,6 @@ export const login = async (
   values: z.infer<typeof LoginSchema>,
   callbackUrl?: string | null
 ) => {
-  console.log({ ReceivedValues: values });
-
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -97,11 +95,9 @@ export const login = async (
       password,
       redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     }).catch((error) => {
-      console.log(error);
       if (error instanceof AuthError) {
         switch (error.type) {
           case "CredentialsSignin":
-            console.log("Testing");
             return { error: "Invalid credentials!" };
           default:
             return { error: "Something went wrong" };
@@ -110,7 +106,6 @@ export const login = async (
       throw error;
     });
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

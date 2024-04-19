@@ -30,6 +30,8 @@ import { BeatLoader } from "react-spinners";
 import { OrganizationResponse } from "@/models/User";
 import { RoleGate } from "@/components/auth/role-gate";
 import { Role } from "@prisma/client";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { toast } from "sonner";
 
 const OrganizationPage = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -42,8 +44,8 @@ const OrganizationPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [fetchTrigger, setFetchTrigger] = useState(0); // add this line to your component
-
   const [loading, setLoading] = useState(true);
+  const user = useCurrentUser();
 
   const form = useForm<z.infer<typeof OrganizationSchema>>({
     resolver: zodResolver(OrganizationSchema),
@@ -63,7 +65,6 @@ const OrganizationPage = () => {
           name: "",
           email: "",
         });
-        console.log(organizations);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -72,14 +73,17 @@ const OrganizationPage = () => {
   }, [fetchTrigger]);
 
   const handleEdit = (id: string) => {
+    if (user?.role !== Role.ADMIN) {
+      toast.error("Unauthorized");
+      return;
+    }
+
     setIsEdit(true);
-    console.log(isEdit);
 
     const organizationToEdit = organizations.find((org) => org.id === id);
     if (organizationToEdit) {
-      console.log(organizationToEdit);
       setOrgId(organizationToEdit.id);
-      console.log(isEdit);
+
       if (!loading) {
         form.reset({
           name: organizationToEdit.name,
@@ -89,10 +93,17 @@ const OrganizationPage = () => {
     }
   };
   const handleDelete = (id: string) => {
+    setError("");
+    setSuccess("");
+    if (user?.role !== Role.ADMIN) {
+      toast.error("Unauthorized");
+      return;
+    }
+
     setIsDelete(true);
     const organizationToDelete = organizations.find((org) => org.id === id);
     if (organizationToDelete) {
-      deleteOrganization(organizationToDelete.id).then((data) => {
+      deleteOrganization(organizationToDelete.id, user?.role).then((data) => {
         if (data?.error) {
           setError(data?.error);
         }
@@ -112,14 +123,13 @@ const OrganizationPage = () => {
     startTransition(() => {
       if (isEdit) {
         // update organization
-        updateOrganization(orgId, data)
+        updateOrganization(orgId, data, user?.role)
           .then((data) => {
             if (data?.error) {
               setError(data?.error);
             }
             if (data?.success) {
               setIsEdit(false);
-              console.log("Checked");
 
               form.reset();
               setSuccess(data?.success);

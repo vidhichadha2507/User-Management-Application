@@ -25,3 +25,16 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export const getUsersByOrganizationId = async (organizationId: string) => {
+  try {
+    const users = await db.userOrganization.findMany({
+      where: {
+        organizationId,
+      },
+    });
+    return users;
+  } catch (error) {
+    return null;
+  }
+};
