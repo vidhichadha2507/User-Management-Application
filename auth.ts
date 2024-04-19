@@ -7,14 +7,14 @@ import { Role } from "@prisma/client";
 import { authRoutes } from "./routes";
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      role: Role;
-    } & DefaultSession["user"];
-  }
-}
+// declare module "next-auth" {
+//   interface Session {
+//     user: {
+//       id: string;
+//       role: Role;
+//     } & DefaultSession["user"];
+//   }
+// }
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: {
@@ -69,6 +69,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as Role;
       }
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
 
       return session;
     },
@@ -80,6 +83,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (existingUser) {
         token.role = existingUser.role;
       }
+      token.isTwoFactorEnabled = existingUser?.isTwoFactorEnabled;
 
       return token;
     },
