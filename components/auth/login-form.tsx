@@ -46,10 +46,10 @@ export const LoginForm = () => {
 
     startTransition(() => {
       login(data).then((data) => {
-        console.log({ ErrorOccured: data });
-
         if (data?.error) {
-          setError(data.error);
+          setError(data?.error);
+        } else {
+          setSuccess(data?.success);
         }
       });
     });
